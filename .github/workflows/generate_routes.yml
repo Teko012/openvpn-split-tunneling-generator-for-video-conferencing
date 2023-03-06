@@ -1,6 +1,7 @@
 name: Generate routes
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
