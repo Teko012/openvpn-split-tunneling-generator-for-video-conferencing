@@ -2,34 +2,46 @@ from ipaddress import ip_network
 from ipcalc import Network
 from pathlib import Path
 
-# Relative folder path
-input_folder_path = './providers/'
-output_file = './openvpn/routes.conf'
+# Relative path for input folder and output file
+INPUT_FOLDER_PATH = './providers/'
+OUTPUT_FILE = './openvpn/routes.conf'
 
-# Output values
-openvpn_command = "route"
-openvpn_gateway = "net_gateway"
-openvpn_metric = "default"
+# Output parameters
+OPENVPN_COMMAND = "route"
+OPENVPN_GATEWAY = "net_gateway"
+OPENVPN_METRIC = "default"
 
-folder_path = Path(__file__).parent / input_folder_path
-files = folder_path.glob('**/*.txt')
 
-cidrs: str = ""
-routes: str = ""
+def get_provider_cidrs(folder_path):
+    cidrs = ""
+    files = folder_path.glob('**/*.txt')
+    for file_path in files:
+        cidrs += Path(file_path).read_text()
+    return cidrs
 
-for file_path in files:
-    cidrs += Path(file_path).read_text()
 
-cidr_list = sorted(cidrs.splitlines(), key=lambda x: ip_network(x))
+def generate_routes(cidr_list):
+    routes = ""
+    for cidr in cidr_list:
+        ip = Network(cidr)
+        network = str(ip.network())
+        netmask = str(ip.netmask())
+        route = f"{OPENVPN_COMMAND} {network} {netmask} {OPENVPN_GATEWAY} {OPENVPN_METRIC}\n"
+        routes += route
+    return routes
 
-for cidr in iter(cidr_list):
-    ip = Network(cidr)
-    network = str(ip.network())
-    netmask = str(ip.netmask())
 
-    routes += " ".join([openvpn_command, network, netmask, openvpn_gateway, openvpn_metric]) + "\n"
+def main():
+    folder_path = Path(__file__).parent / INPUT_FOLDER_PATH
+    cidrs = get_provider_cidrs(folder_path)
+    cidr_list = sorted(cidrs.splitlines(), key=lambda x: ip_network(x))
+    routes = generate_routes(cidr_list)
 
-with open(output_file, "w") as f:
-    print(routes, file=f)
+    with open(OUTPUT_FILE, "w") as f:
+        print(routes, file=f)
 
-print("Routes successfully generated")
+    print("Routes successfully generated")
+
+
+if __name__ == "__main__":
+    main()
