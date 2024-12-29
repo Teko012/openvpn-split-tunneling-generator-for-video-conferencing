@@ -6,7 +6,7 @@ The output in `openvpn/routes.conf` can be added to a connection's `config.conf`
 With some slight modifications, these routes can also be pushed down from an OpenVPN server to the end users.
 
 ## Supported providers
-* [Amazon Chime](https://answers.chime.aws/articles/123/hosts-ports-and-protocols-needed-for-amazon-chime.html) / [Slack Huddle](https://slack.com/intl/en-gb/help/articles/115003538426-Troubleshoot-audio-and-video-issues-in-Slack)
+* [Amazon Chime](https://answers.chime.aws/articles/123/hosts-ports-and-protocols-needed-for-amazon-chime.html) / [Slack Huddle](https://slack.com/help/articles/36284146785427-Guide-to-network-and-system-configuration-for-Slack-huddles)
 * [Google Meet - Consumer & Google Workspace](https://support.google.com/a/answer/1279090)
 * [Skype for Business Online and Microsoft Teams #11](https://learn.microsoft.com/en-us/microsoft-365/enterprise/urls-and-ip-address-ranges) ([API](https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7))
 * [Webex](https://help.webex.com/en-us/article/WBX000028782/Network-Requirements-for-Webex-Services)
